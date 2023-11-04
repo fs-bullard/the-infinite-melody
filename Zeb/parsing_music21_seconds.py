@@ -55,5 +55,6 @@ print(tempo)
 print(len(notes))
 
 with open('test.csv', 'w') as f:
+     
     write = csv.writer(f)
     write.writerows(notes)
