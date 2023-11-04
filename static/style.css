@@ -14,3 +14,16 @@ body {
     
     margin: auto;
 }
+
+#treble-clef {
+    width: 50px; /* Adjust the size as needed */
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.note {
+    position: absolute;
+    top: 50%; /* Adjust the vertical position as needed */
+    width: 50px;
+}
