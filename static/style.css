@@ -1,0 +1,29 @@
+body {
+    text-align: center;
+    background-color: transparent;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+#music-container {
+    position: absolute;
+    top:40%;
+    bottom: 0;
+    left: 0.1%;
+    right: 0;
+    
+    margin: auto;
+}
+
+#treble-clef {
+    width: 50px; /* Adjust the size as needed */
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.note {
+    position: absolute;
+    top: 50%; /* Adjust the vertical position as needed */
+    width: 50px;
+}
