@@ -35,3 +35,11 @@ body {
     animation-duration: 8.640s;
     animation-timing-function: linear;
 }
+
+.rest {
+    position: absolute;
+    width: 30px;
+    animation-name: notesAnimation;
+    animation-duration: 8.640s;
+    animation-timing-function: linear;
+}

@@ -13,7 +13,7 @@ const heights = {
 };
 
 // For testing
-const exampleNotes = [["C4", 1500], ["D4", 1500], ["E4", 1500], ["F4", 1500], ["G4", 1500]];
+const exampleNotes = [["C4", 1500], ["rest", 1500], ["E4", 1500], ["F4", 1500], ["G4", 1500]];
 
 // Set animation duration (using 100 bpm)
 const width = window.screen.availWidth;
@@ -45,6 +45,20 @@ function createNoteElement(note) {
     return noteElement;
 }
 
+function createRestElement() {
+    const noteElement = document.createElement("div");
+
+    let noteImage = document.createElement("img");
+
+    noteImage.className = "rest";
+    noteImage.src = 'static/quarter_rest.png';
+    noteImage.style.bottom = "-75px";
+    noteElement.appendChild(noteImage);
+    noteContainer.appendChild(noteImage);
+
+    return noteElement;
+}
+
 function playNextNote(noteIndex) {
     const audio = new Audio();
 
@@ -52,12 +66,15 @@ function playNextNote(noteIndex) {
     const note = exampleNotes[noteIndex][0];
     const duration = exampleNotes[noteIndex][1];
 
-    // Create the note
-    const noteElement = createNoteElement(note);
-
-    audio.src = `static/piano-mp3/${note}.mp3`;
-    audio.currentTime = 0; // Reset audio to the beginning
-    audio.play();
+    // Create the note or rest
+    if (note == 'rest') {
+        const noteElement = createRestElement(note);
+    } else {
+        const noteElement = createNoteElement(note);
+        audio.src = `static/piano-mp3/${note}.mp3`;
+        audio.currentTime = 0; // Reset audio to the beginning
+        audio.play();
+    }
 
     elapsedTime += duration;
     
