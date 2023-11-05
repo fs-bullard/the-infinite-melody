@@ -20,8 +20,9 @@ __pycache__/
 
 /setup.cfg
 venv/
-Ben/
-Zeb/
+backend/
 *.csv
 *.mid
 resources/
+*.mov
+songs/
