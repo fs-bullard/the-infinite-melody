@@ -34,24 +34,22 @@ mid.tracks.append(track)
 track.append(MetaMessage('set_tempo', tempo=bpm2tempo(60)))
 track.append(MetaMessage('time_signature', numerator=4, denominator=4))
 
-runtime = 0
 for datum in data:
     if datum:
         note = datum[0]
         duration = float(datum[1])
-        print(int(duration * 120))
         if not note == 'rest' and note:
             if '[' in note:
                 for n in eval(note):
                     note_number = NoteToMidi(n)
-                    track.append(Message('note_on', note=note_number, velocity=64, time=runtime))
-                    track.append(Message('note_off', note=note_number, velocity=64, time=runtime + int(duration * 120)))  # 480 ticks per beat for 4/4 time signature  
+                    track.append(Message('note_on', note=note_number, velocity=64, time=0))
+                for n in eval(note):
+                    note_number = NoteToMidi(n)
+                    track.append(Message('note_off', note=note_number, velocity=64, time=int(duration * 240)))  # 480 ticks per beat for 4/4 time signature  
             else:
                 note_number = NoteToMidi(note)
-                track.append(Message('note_on', note=note_number, velocity=64, time=runtime))
-                track.append(Message('note_off', note=note_number, velocity=64, time=runtime + int(duration * 120)))  # 480 ticks per beat for 4/4 time signature
-            print(runtime)
-            runtime += int(duration * 120)
+                track.append(Message('note_on', note=note_number, velocity=64, time=0))
+                track.append(Message('note_off', note=note_number, velocity=64, time=int(duration * 240)))  # 480 ticks per beat for 4/4 time signature
 
 track.append(MetaMessage('end_of_track'))
 
