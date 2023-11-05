@@ -34,16 +34,32 @@ function getNoteHeight(note) {
     return heights[prefix];
 }
 
-function createNoteElement(note) {
+function createNoteElement(note, n) {
     const noteElement = document.createElement("div");
 
     let noteImage = document.createElement("img");
 
     noteImage.className = "note";
     if (note[1] == 'b') {
-        noteImage.src = 'static/crochet_flat.png';
+        if (n == 1) {
+            noteImage.src = 'static/crochet_flat.png';
+        } else if (n == 2 || n == 3) {
+            noteImage.src = 'static/minim_flat.png';
+        } else {
+            noteImage.src = 'static/semibreve_flat.png';
+
+        }
+        
     } else {
-        noteImage.src = 'static/crochet.png';
+        if (n == 1) {
+            noteImage.src = 'static/crochet.png';
+        } else if (n == 2 || n == 3) {
+            noteImage.src = 'static/minim.png';
+        } else {
+            noteImage.src = 'static/semibreve.png';
+        }
+
+       
     }
 
     noteImage.style.bottom = `${String(getNoteHeight(note))}px`;
@@ -71,6 +87,7 @@ function playNextNote(noteIndex) {
     // Find the current note and its duration
     const note = exampleNotes[noteIndex][0];
     const duration = exampleNotes[noteIndex][1] * note.length * 60000 / bpm;
+    const n = note.length;
 
     // Create the note or rest
     if (note == 'rest') {
@@ -79,7 +96,7 @@ function playNextNote(noteIndex) {
         let i = 0;
         while (i < note.length) {
             const audio = new Audio();
-            createNoteElement(note[i]);
+            createNoteElement(note[i], n);
             audio.src = `static/piano-mp3/${note[i]}.mp3`;
             audio.currentTime = 0; // Reset audio to the beginning
             audio.play();
@@ -106,7 +123,6 @@ function generateSingleNote(noteIndex) {
 // Start the music playback
 playButton.addEventListener("click", function() {
     let noteIndex = 0;
-    // Remove blur and button
-    // musicContainer.style.filter = "none";
     generateSingleNote(noteIndex);
+    this.style.display = "none";
 });
