@@ -1,0 +1,19 @@
+from google.cloud import bigquery
+
+# Set up credentials
+service_account_json = '/path/to/your/credentials.json'
+client = bigquery.Client.from_service_account_json(service_account_json)
+
+# Make a query
+query = """
+    SELECT *
+    FROM `your_project.your_dataset.your_table`
+    LIMIT 10
+"""
+
+# Run the query
+query_job = client.query(query)
+
+# Iterate through the results
+for row in query_job:
+    print(row)
