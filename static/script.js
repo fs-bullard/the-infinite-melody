@@ -1,24 +1,18 @@
 const playButton = document.getElementById("play-button");
 const noteContainer = document.getElementById("note-container");
 
-const audioURLs = {
-    "A4":"static/piano-mp3/A4.mp3",
-    "A#4":"static/piano-mp3/Bb4.mp3",
-    "B4":"static/piano-mp3/B4.mp3",
-    "C4":"static/piano-mp3/C4.mp3",
-    "C#4":"static/piano-mp3/Db4.mp3",
-    "D4":"static/piano-mp3/D4.mp3",
-    "D#4":"static/piano-mp3/Eb4.mp3",
-    "E4":"static/piano-mp3/E4.mp3",
-    "F4":"static/piano-mp3/F4.mp3",
-    "F#4":"static/piano-mp3/Gb4.mp3",
-    "G4":"static/piano-mp3/G4.mp3",
-    "G#4":"static/piano-mp3/Ab4.mp3"
+const heights = {
+    "A":-63,
+    "B":-53,
+    "C":-45,
+    "D":-35,
+    "E":-88,
+    "F":-81,
+    "G":-71,
 };
 
 // For testing
 const exampleNotes = [["C4", 1500], ["D4", 1500], ["E4", 1500], ["F4", 1500], ["G4", 1500]];
-// const exampleNotes = [["C4", 1500]];
 
 // Set animation duration (using 100 bpm)
 const width = window.screen.availWidth;
@@ -31,6 +25,11 @@ const animationDuration = width * (60/bpm) / crotchetWidth * 1000;
 console.log(animationDuration)
 // const animationDuration = 10000;
 
+function getNoteHeight(note) {
+    prefix = note.slice(0, 1);
+    return heights[prefix];
+}
+
 function createNoteElement(note) {
     const noteElement = document.createElement("div");
 
@@ -38,6 +37,7 @@ function createNoteElement(note) {
 
     noteImage.className = "note";
     noteImage.src = 'static/crochet.png';
+    noteImage.style.bottom = `${String(getNoteHeight(note))}px`;
     noteElement.appendChild(noteImage);
     noteContainer.appendChild(noteImage);
 
@@ -54,7 +54,7 @@ function playNextNote(noteIndex) {
     // Create the note
     const noteElement = createNoteElement(note);
 
-    audio.src = audioURLs[note];
+    audio.src = `static/piano-mp3/${note}.mp3`;
     audio.currentTime = 0; // Reset audio to the beginning
     audio.play();
 
