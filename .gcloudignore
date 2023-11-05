@@ -22,4 +22,6 @@ __pycache__/
 venv/
 Ben/
 Zeb/
-test.csv
+*.csv
+*.mid
+resources/
