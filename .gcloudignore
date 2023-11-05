@@ -16,6 +16,10 @@
 # Python pycache:
 __pycache__/
 # Ignored by the build system
-/setup.cfg
 
+
+/setup.cfg
 venv/
+Ben/
+Zeb/
+test.csv
