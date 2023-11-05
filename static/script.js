@@ -1,5 +1,6 @@
 const playButton = document.getElementById("play-button");
 const noteContainer = document.getElementById("note-container");
+// const musicContainer = document.getElementById("music-container");
 
 const heights = {
     "A":-63,
@@ -83,5 +84,7 @@ function generateSingleNote(noteIndex) {
 // Start the music playback
 playButton.addEventListener("click", function() {
     let noteIndex = 0;
+    // Remove blur and button
+    // musicContainer.style.filter = "none";
     generateSingleNote(noteIndex);
 });
