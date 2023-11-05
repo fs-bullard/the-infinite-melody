@@ -47,9 +47,9 @@ for part in mus:
 
 notes = []
 for note in note_list:
-    notes.append([note[0], note[1], note[3]])
+    notes.append([note[0], note[1]])
 
-with open('test.csv', 'w', newline='') as f:
+with open('test_no_time.csv', 'w', newline='') as f:
      
     write = csv.writer(f)
     write.writerows(notes)
