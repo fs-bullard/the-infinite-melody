@@ -3,6 +3,7 @@ body {
     background-color: transparent;
     max-width: 100%;
     overflow-x: hidden;
+    font-family: 'Playfair Display', serif;
 }
 
 #music-container {
@@ -32,7 +33,7 @@ body {
     position: absolute;
     width: 50px;
     animation-name: notesAnimation;
-    animation-duration: 8.640s;
+    animation-duration: 5.082s;
     animation-timing-function: linear;
 }
 
@@ -40,6 +41,6 @@ body {
     position: absolute;
     width: 30px;
     animation-name: notesAnimation;
-    animation-duration: 8.640s;
+    animation-duration: 5.082s;
     animation-timing-function: linear;
 }
