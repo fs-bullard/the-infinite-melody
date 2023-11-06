@@ -25,4 +25,4 @@ backend/
 *.mid
 resources/
 *.mov
-songs/
+utils/

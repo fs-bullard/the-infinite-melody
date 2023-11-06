@@ -3,3 +3,5 @@ python-engineio==3.13.2
 python-socketio==4.6.0
 Flask==2.0.3
 Werkzeug==2.0.3
+numpy==1.26.1
+torch==2.1.0
