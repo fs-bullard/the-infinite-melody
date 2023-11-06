@@ -118,7 +118,8 @@ function playNextNote(noteIndex, note, dur) {
 
     // Find the current note and its duration
     const n = note.length
-    const duration = dur * 60000 / bpm;
+    const dur_fac = Math.max(n % 3, 1)
+    const duration = dur * dur_fac * 60000 / bpm;
 
     // Create the note or rest
     if (note == 'rest') {
