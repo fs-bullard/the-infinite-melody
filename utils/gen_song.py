@@ -116,7 +116,7 @@ for track in range(number_of_songs):
             note_sequence = torch.cat((note_sequence[1:], torch.tensor([sq_next_note])))
             duration_sequence = torch.cat((duration_sequence[1:], sq_next_duration))
 
-    f = open("songs/song"+str(track)+".txt", "w")
+    f = open("utils/songs/song"+str(track)+".txt", "w")
     f.write(str(song2))
     f.close()
     toMIDI(song, "songs/song"+str(track)+".mid")

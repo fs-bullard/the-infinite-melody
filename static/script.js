@@ -22,7 +22,7 @@ const bpm = 170;
 let elapsedTime = 0;
 
 const animationDuration = width * (60/bpm) / crotchetWidth * 1000;
-console.log(animationDuration)
+// console.log(animationDuration)
 // const animationDuration = 10000;
 
 function getNoteHeight(note) {
@@ -124,9 +124,4 @@ var socket = io.connect();
   socket.on("newnote", function (msg) {
     notes.push([msg.note, msg.duration]);
 
-    // // Show only MAX_DATA_COUNT data
-    // if (myChart.data.labels.length > MAX_DATA_COUNT) {
-    //   removeFirstData();
-    // }
-    // addData(msg.date, msg.value);
   });
