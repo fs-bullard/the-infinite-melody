@@ -118,5 +118,5 @@ for track in range(number_of_songs):
 
     f = open("songs/song"+str(track)+".txt", "w")
     f.write(str(song2))
-    f.close
+    f.close()
     toMIDI(song, "songs/song"+str(track)+".mid")
