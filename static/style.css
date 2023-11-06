@@ -45,3 +45,10 @@ p {
     animation-timing-function: linear;
     right: 110%;
 }
+
+#mute-button {
+    display: none;
+}
+#unmute-button {
+    display: none;
+}

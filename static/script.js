@@ -1,4 +1,6 @@
 const playButton = document.getElementById("play-button");
+const muteButton = document.getElementById("mute-button");
+const unmuteButton = document.getElementById("unmute-button");
 const noteContainer = document.getElementById("note-container");
 
 const bass_heights = [
@@ -35,6 +37,7 @@ const treb_bottom = -92;
 const dh = 8.6;
 
 var notes = [];
+var isPlaying = false;
 
 const width = window.screen.availWidth;
 const crotchetWidth = 100;
@@ -122,12 +125,14 @@ function playNextNote(noteIndex, note, dur) {
         createRestElement(note);
     } else {
         let i = 0;
-        while (i < note.length) {
-            const audio = new Audio();
+        while (i < note.length) {      
             createNoteElement(note[i], n);
-            audio.src = `static/piano-mp3/${note[i]}.mp3`;
-            audio.currentTime = 0; // Reset audio to the beginning
-            audio.play();
+            if (isPlaying) {
+                const audio = new Audio();
+                audio.src = `static/piano-mp3/${note[i]}.mp3`;
+                audio.currentTime = 0; // Reset audio to the beginning
+                audio.play();
+            }
             i++;
         }
     }
@@ -148,13 +153,29 @@ function generateSingleNote(noteIndex) {
 // Start the music playback
 playButton.addEventListener("click", function() {
     let noteIndex = 0;
+    isPlaying = true;
     generateSingleNote(noteIndex);
     this.style.display = "none";
+    muteButton.style.display = "inline"
 });
 
-var socket = io.connect();
-  //receive details from server
-  socket.on("newnote", function (msg) {
-    notes.push([msg.note, msg.duration]);
+muteButton.addEventListener("click", function() {
+    this.style.display = "none"
+    unmuteButton.style.display = "inline"
+    isPlaying = false;
+})
 
-  });
+unmuteButton.addEventListener("click", function() {
+    this.style.display = "none"
+    muteButton.style.display = "inline"
+    isPlaying = true;
+})
+
+var socket = io.connect();
+    //receive details from server
+    socket.on("newnote", function (msg) {
+        notes.push([msg.note, msg.duration]);
+
+    });
+
+
