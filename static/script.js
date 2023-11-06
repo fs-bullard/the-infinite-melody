@@ -1,20 +1,41 @@
 const playButton = document.getElementById("play-button");
 const noteContainer = document.getElementById("note-container");
-// const musicContainer = document.getElementById("music-container");
 
-const heights = {
-    "A":-63,
-    "B":-53,
-    "C":-45,
-    "D":-35,
-    "E":-88,
-    "F":-81,
-    "G":-71,
-};
+const bass_heights = [
+    "F2",
+    "G2",
+    "A2",
+    "B2",
+    "C3",
+    "D3",
+    "E3",
+    "F3",
+    "G3",
+    "A3",
+    "B3"
+];
+const treb_heights = [
+    "D4",
+    "E4",
+    "F4",
+    "G4",
+    "A4",
+    "B4",
+    "C4",
+    "C5",
+    "D5",
+    "E5",
+    "F5",
+    "G5",
+    "A5",
+    "B5"
+];
+const bass_bottom = -227;
+const treb_bottom = -92;
+const dh = 8.6;
 
 var notes = [];
 
-// Set animation duration (using 100 bpm)
 const width = window.screen.availWidth;
 const crotchetWidth = 100;
 const bpm = 170;
@@ -22,12 +43,24 @@ const bpm = 170;
 let elapsedTime = 0;
 
 const animationDuration = width * (60/bpm) / crotchetWidth * 1000;
-// console.log(animationDuration)
-// const animationDuration = 10000;
 
 function getNoteHeight(note) {
-    prefix = note.slice(0, 1);
-    return heights[prefix];
+    const natural = note.slice(0, 1) + note.slice(-1);
+    if (bass_heights.includes(natural)) {
+        return bass_bottom + bass_heights.indexOf(natural)*dh;
+    } else if (treb_heights.includes(natural)) {
+        return treb_bottom + treb_heights.indexOf(natural)*dh;
+    } else if (natural.slice(-1) == 0) {
+        return bass_bottom + bass_heights.indexOf(natural.slice(0, 1) + "3")*dh;
+    } else if (natural.slice(-1) == 1) {
+        return bass_bottom + bass_heights.indexOf(natural.slice(0, 1) + "3")*dh;
+    } else if (natural.slice(-1) == 2) {
+        return bass_bottom + bass_heights.indexOf(natural.slice(0, 1) + "3")*dh;
+    } else if (natural.slice(-1) == 6) {
+        return treb_bottom + treb_heights.indexOf(natural.slice(0, 1) + "5")*dh;
+    } else {
+        return treb_bottom + treb_heights.indexOf(natural.slice(0, 1) + "5")*dh;
+    } 
 }
 
 function createNoteElement(note, n) {
@@ -81,8 +114,8 @@ function createRestElement() {
 function playNextNote(noteIndex, note, dur) {
 
     // Find the current note and its duration
-    const n = note.length;
-    const duration = dur * n * 60000 / bpm;
+    const n = note.length
+    const duration = dur * 60000 / bpm;
 
     // Create the note or rest
     if (note == 'rest') {

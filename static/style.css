@@ -24,8 +24,8 @@ p {
 }
 
 @keyframes notesAnimation {
-    from {right: -5%;}
-    to {right:  90%;}
+    from {left: 105%;}
+    to {left:  50px;}
 }
 
 .note {
