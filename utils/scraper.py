@@ -53,6 +53,7 @@ parser = Parser()
 urls = []
 save_dir = "midi_files"
 
+i = 0
 for url in start_urls:
     try:
         f = urlopen(url)
@@ -63,5 +64,7 @@ for url in start_urls:
         print("Error accessing '"+url+"': "+str(e))
     else:
         parser.feed(mystr)
+        dataset = dataset[:-(len(dataset) - i % 21)]
+        i = len(dataset)
 
 np.save("dataset.npy", dataset)

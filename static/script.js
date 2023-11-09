@@ -2,6 +2,11 @@ const playButton = document.getElementById("play-button");
 const muteButton = document.getElementById("mute-button");
 const unmuteButton = document.getElementById("unmute-button");
 const noteContainer = document.getElementById("note-container");
+const downloadButton = document.getElementById("download-button");
+const reloadButton = document.getElementById("reload");
+
+var notes_played = [];
+var silenceDurations = [];
 
 const bass_heights = [
     "F2",
@@ -38,10 +43,11 @@ const dh = 8.6;
 
 var notes = [];
 var isPlaying = false;
+var reload = false;
 
 const width = window.screen.availWidth;
 const crotchetWidth = 100;
-const bpm = 170;
+const bpm = 120;
 
 let elapsedTime = 0;
 
@@ -118,23 +124,35 @@ function playNextNote(noteIndex, note, dur) {
 
     // Find the current note and its duration
     const n = note.length
-    const dur_fac = Math.max(n % 3, 1)
-    const duration = dur * dur_fac * 60000 / bpm;
+    const dur_fac = n ; //Math.max(n % 6, 1)
+    const duration = dur * dur_fac * 60000 / 4/ bpm;
+    console.log(dur * dur_fac / 4)
 
     // Create the note or rest
     if (note == 'rest') {
         createRestElement(note);
     } else {
         let i = 0;
+        var audios = [];
         while (i < note.length) {      
             createNoteElement(note[i], n);
             if (isPlaying) {
                 const audio = new Audio();
-                audio.src = `static/piano-mp3/${note[i]}.mp3`;
-                audio.currentTime = 0; // Reset audio to the beginning
-                audio.play();
+                var src = document.createElement("source");
+                src.type = "audio/mp3";
+                src.src = `static/piano-mp3/${note[i]}.mp3`;
+                audio.appendChild(src);
+                audio.currentTime = 0;
+                audios.push(audio);
             }
             i++;
+        }
+        if (isPlaying) {
+        i = 0
+        while(i<note.length) {
+            audios[i].play();
+            i++;
+        }
         }
     }
 
@@ -142,13 +160,22 @@ function playNextNote(noteIndex, note, dur) {
     
     // Schedule the next note's animation
     setTimeout(() => {
-        generateSingleNote(noteIndex + 1);
+        if(!reload) generateSingleNote(noteIndex + 1);
+        else {
+            reload = false;
+            generateSingleNote(0);
+        }
     }, duration)  
 
 }
 
 function generateSingleNote(noteIndex) {
-    playNextNote(noteIndex, notes[noteIndex][0], notes[noteIndex][1]);
+    if(notes.length <= noteIndex) {
+        setTimeout(() => {
+            generateSingleNote(noteIndex);
+        }, 500)
+    }
+    else playNextNote(noteIndex, notes[noteIndex][0], notes[noteIndex][1]);
 }
 
 // Start the music playback
@@ -173,10 +200,13 @@ unmuteButton.addEventListener("click", function() {
 })
 
 var socket = io.connect();
-    //receive details from server
-    socket.on("newnote", function (msg) {
-        notes.push([msg.note, msg.duration]);
+//receive details from server
+socket.on("newnote", function (msg) {
+    notes.push([msg.note, msg.duration]);
 
-    });
+});
 
-
+reloadButton.addEventListener("click", function() {
+    socket.emit('reload');
+    notes = [];
+})

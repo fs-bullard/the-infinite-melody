@@ -16,6 +16,7 @@ def NoteToMidi(KeyOctave):
         else:
             pos = NOTES_SHARP.index(key)
     except:
+        print(KeyOctave == 'rest' )
         print('The key is not valid', key)
         return None
 
@@ -26,14 +27,14 @@ def toMIDI(data, name):
     mid = MidiFile()
     track = MidiTrack()
     mid.tracks.append(track)
-    track.append(MetaMessage('set_tempo', tempo=bpm2tempo(170)))
+    track.append(MetaMessage('set_tempo', tempo=bpm2tempo(120)))
     track.append(MetaMessage('time_signature', numerator=4, denominator=4))
 
     for datum in data:
         if datum:
             note = str(datum[0])
-            duration = float(datum[1])
-            if not note == 'rest' and note:
+            duration = float(datum[1])/4
+            if note and not note == 'rest': #eval(note)[0]
                 if '[' in note:
                     for n in eval(note):
                         note_number = NoteToMidi(n)

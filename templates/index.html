@@ -23,9 +23,11 @@
         <p style="float:left"><img src="static/crochet.png" style="width: 20px">= 170 bpm</p>
         <p style="float:right">Music by AI</p>
       </div>
-      <button id="play-button">Play</button>
-      <button id="mute-button">Mute</button>
-      <button id="unmute-button">Unmute</button>
+      <a href="#popup1" id="menu" class="button"><img style="width: 30px;" src="static/menu.png"></img></a>
+      <a id="reload" class="button"><img style="width: 30px;" src="static/refresh.png"></img></a>
+      <button id="play-button" class="button"><img src="static/play.png" style="height:60px;"/></button>
+      <button id="mute-button" class="button"><img src="static/mute.png" style="height:60px;"/></button>
+      <button id="unmute-button" class="button"><img src="static/unmute.png" style="height:60px;"/></button>
       <div>
         <div id="music-container" style="padding-top:10vh" >
             <img style="height:212px; float:left; width: 100%" src="static/clef.png">
@@ -43,6 +45,22 @@
       
       <div>
         <p style="font-size: 50px; padding-top: 15%">An <i>Infinite Melody</i> generated in real time by AI</p>
+      </div>
+
+      <div id="popup1" class="overlay">
+        <div class="popup">
+          <h1 style="font-size: 70px">The Infinite Melody <img style="width: 100px; vertical-align: middle;" src="static/logo.png"> </h1>
+
+          <a class="close" href="#">&times;</a>
+          <div class="content">
+            <img style="height:20px" src="https://cdn-icons-png.flaticon.com/512/25/25231.png"></img> Github: <a href="github">https://infinite-melody.nw.r.appspot.com/github</a>
+            <br><br>
+            <img style="height:20px" src="https://cdn-icons-png.flaticon.com/512/49/49336.png"></img> Soundcloud: <a href="soundcloud">https://infinite-melody.nw.r.appspot.com/soundcloud</a>
+            <br><br>
+            <img style="height:20px" src="https://seeklogo.com/images/D/devpost-logo-95FF685C5D-seeklogo.com.png"></img> Devpost Submission: <a href="devpost">https://infinite-melody.nw.r.appspot.com/devpost</a>
+            
+          </div>
+        </div>
       </div>
 
     </body>

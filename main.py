@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from flask_socketio import SocketIO
 from random import random
 from threading import Lock
@@ -92,6 +92,17 @@ def generate_notes():
         k = 4
         count = 1
         while True:
+            global reload_seed
+            if reload_seed:
+                sequence_len = 20
+                idx = random.randint(0,len(dataset)-sequence_len-1)
+                note_sequence, duration_sequence = [], []
+                for i in range(idx, idx+sequence_len):
+                    note_sequence.append(dataset[i][0])
+                    duration_sequence.append(dataset[i][1])
+                note_sequence, duration_sequence = torch.tensor(note_sequence, dtype=torch.int32), torch.tensor(duration_sequence, dtype=torch.int32)
+                reload_seed = False
+
             # next note
             next_note = note_model(note_sequence.to(device).view(1,sequence_len))
             probs = (1 / (1+ np.exp(-next_note)))[0]
@@ -146,6 +157,7 @@ def generate_notes():
 # web socket
 thread = None
 thread_lock = Lock()
+reload_seed = False
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "key"
@@ -168,6 +180,22 @@ def connect():
 def disconnect():
     print('Client disconnected',  request.sid)
 
+@socketio.on('reload')
+def handle_data():
+    global reload_seed
+    reload_seed = True
+
+@app.route("/soundcloud", methods=["GET"])
+def to_soundcloud():
+    return redirect("https://soundcloud.com/ben-welch-203938063/sets/the-infinite-melody?si=0166bd2f880b4e0fb3ab0bd51f1d609b&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing", code=302)
+
+@app.route("/github", methods=["GET"])
+def to_github():
+    return redirect("https://github.com/fs-bullard/the-infinite-melody", code=302)
+
+@app.route("/devpost", methods=["GET"])
+def to_devpost():
+    return redirect("https://devpost.com/software/the-infinite-melody", code=302)
 
 if __name__ == '__main__':
     # app.run(debug=True)

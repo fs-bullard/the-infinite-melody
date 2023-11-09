@@ -37,12 +37,12 @@ chords_consts = np.load(join(source_dir,"chords_consts.npy"), allow_pickle=True)
 chord_const = 25
 chords_vals = np.load(join(source_dir,"chords_vals.npy"), allow_pickle=True)
 
-note_model = torch.load(join(source_dir,"note_model.pth")).to(device)
+note_model = torch.load(join(source_dir,"note_model8.pth")).to(device)
 note_model.eval()
 note_model.init_hidden(device, 1)
 note_model.apply(deactivate_batchnorm)
 
-duration_model = torch.load(join(source_dir,"duration_model.pth")).to(device)
+duration_model = torch.load(join(source_dir,"duration_model8.pth")).to(device)
 duration_model.eval()
 duration_model.init_hidden(device, 1)
 duration_model.apply(deactivate_batchnorm)
@@ -75,9 +75,6 @@ for track in range(number_of_songs):
             probs[-2] *= 0.3
             sq_next_note = np.random.choice(vals, p=probs/sum(probs).item())
             note = mapping[int(sq_next_note.item())]
-
-            if note == "rest":
-                duration = np.clip(duration, 1, 4)
             
             if len(prevk) == k:
                 prevk = prevk[1:] + [sq_next_note]
@@ -88,6 +85,9 @@ for track in range(number_of_songs):
             next_duration = duration_model(duration_sequence.to(device).view(1,sequence_len))
             sq_next_duration = torch.argmax(next_duration, 1)
             duration = sq_next_duration.item() + 1
+
+            if note == "rest":
+                duration = np.clip(duration, 1, 4)
 
             # chords
             if note in chords_consts.keys() and random.uniform(0,1) < chord_const * chords_consts[note]:
@@ -110,8 +110,8 @@ for track in range(number_of_songs):
                     n = sharp_to_flat[n[:2]] + n[2:]
                 newnote.append(n)
 
-            song.append([note, round(duration)])
-            song2.append([newnote, round(duration)])
+            song.append([note, round(duration/4)])
+            song2.append([newnote, round(duration/4)])
 
             note_sequence = torch.cat((note_sequence[1:], torch.tensor([sq_next_note])))
             duration_sequence = torch.cat((duration_sequence[1:], sq_next_duration))
@@ -119,4 +119,4 @@ for track in range(number_of_songs):
     f = open("utils/songs/song"+str(track)+".txt", "w")
     f.write(str(song2))
     f.close()
-    toMIDI(song, "songs/song"+str(track)+".mid")
+    toMIDI(song, "utils/songs/song"+str(track)+".mid")
