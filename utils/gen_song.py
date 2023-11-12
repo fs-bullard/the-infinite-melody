@@ -37,21 +37,21 @@ chords_consts = np.load(join(source_dir,"chords_consts.npy"), allow_pickle=True)
 chord_const = 25
 chords_vals = np.load(join(source_dir,"chords_vals.npy"), allow_pickle=True)
 
-note_model = torch.load(join(source_dir,"note_model8.pth")).to(device)
+note_model = torch.load(join(source_dir,"note_model.pth")).to(device)
 note_model.eval()
 note_model.init_hidden(device, 1)
 note_model.apply(deactivate_batchnorm)
 
-duration_model = torch.load(join(source_dir,"duration_model8.pth")).to(device)
+duration_model = torch.load(join(source_dir,"duration_model.pth")).to(device)
 duration_model.eval()
 duration_model.init_hidden(device, 1)
 duration_model.apply(deactivate_batchnorm)
 
-number_of_songs = 1
-for track in range(number_of_songs):
+number_of_songs = 2
+for track in range(1,number_of_songs):
 
     # Create seed
-    sequence_len = 20
+    sequence_len = 300
     dataset = np.load(join(source_dir,"dataset2.npy"), allow_pickle=True)
     idx = random.randint(0,len(dataset)-sequence_len-1)
     note_sequence, duration_sequence = [], []

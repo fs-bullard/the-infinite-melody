@@ -5,6 +5,12 @@ const noteContainer = document.getElementById("note-container");
 const downloadButton = document.getElementById("download-button");
 const reloadButton = document.getElementById("reload");
 
+document.addEventListener("DOMContentLoaded", function(){
+    document.getElementById("github-link").innerHTML = window.location.hostname + "/github";
+    document.getElementById("soundcloud-link").innerHTML = window.location.hostname + "/soundcloud";
+    document.getElementById("devpost-link").innerHTML = window.location.hostname + "/devpost";
+});
+
 var notes_played = [];
 var silenceDurations = [];
 
@@ -47,7 +53,7 @@ var reload = false;
 
 const width = window.screen.availWidth;
 const crotchetWidth = 100;
-const bpm = 120;
+const bpm = 170;
 
 let elapsedTime = 0;
 
@@ -124,9 +130,8 @@ function playNextNote(noteIndex, note, dur) {
 
     // Find the current note and its duration
     const n = note.length
-    const dur_fac = n ; //Math.max(n % 6, 1)
-    const duration = dur * dur_fac * 60000 / 4/ bpm;
-    console.log(dur * dur_fac / 4)
+    const dur_fac = 1; //n ; //Math.max(n % 6, 1)
+    const duration = dur * dur_fac * 60000 / 3 / 4/ bpm;
 
     // Create the note or rest
     if (note == 'rest') {

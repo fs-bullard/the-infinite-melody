@@ -72,14 +72,18 @@ if __name__ == "__main__":
     
     for t in range(epochs):
         stime = time.time()
-        # c = 0
+        stime2 = time.time()
         for X, y in loader:
+            if time.time() - stime2 > 3600:
+                torch.save(note_model, "note_model.pth")
+                torch.save(duration_model, "duration_model.pth")
+                stime2 = time.time()
             noteX, durationX = X[:,:,0].to(device), X[:,:,1].to(device)
             noteY, durationY = y[:,0].to(device), y[:,1].to(device)
 
             if noteX.size()[0] == batch_size:
-                note_model.init_hidden(device, 32)
-                duration_model.init_hidden(device, 32)
+                note_model.init_hidden(device, batch_size)
+                duration_model.init_hidden(device, batch_size)
 
                 note_output = note_model(noteX)
                 duration_output = duration_model(durationX)
@@ -94,9 +98,6 @@ if __name__ == "__main__":
                 duration_optimizer.zero_grad()
                 duration_loss.backward()
                 duration_optimizer.step()
-            # c += 1
-            # if c > 1000:
-            #     break
         
         print('Epoch : ' , t+1 , 'note loss : ' , note_loss.item(), 'duration loss : ' , duration_loss.item(), ' time taken: ', time.time()-stime)
         torch.save(note_model, "note_model"+str(t+1)+".pth")

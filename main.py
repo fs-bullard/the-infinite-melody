@@ -14,7 +14,7 @@ import __main__
 
 def generate_notes():
     class MusicRNN(torch.nn.Module):
-        def __init__(self, input_size, output_size, sequence_length, hidden_size=150, num_layers=1, dropout=0.2):
+        def __init__(self, input_size, output_size, sequence_length, hidden_size, num_layers=1, dropout=0.2):
             super(MusicRNN, self).__init__()
             self.input_size = input_size
             self.hidden_size = hidden_size
@@ -26,13 +26,13 @@ def generate_notes():
             self.drop = nn.Dropout(p=dropout)
             self.out = nn.Linear(sequence_length*self.hidden_size, self.output_size)
             
-        def init_hidden(self, device, batch_size=100):
+        def init_hidden(self, device, batch_size):
             self.hidden = (Variable(torch.zeros(self.num_layers, batch_size, self.hidden_size, device=device)), Variable(torch.zeros(self.num_layers, batch_size, self.hidden_size, device=device)))
             
         def forward(self, seq):
             batch_size, seq_len = seq.size()
             embeds = self.embeddings(seq.view(1, -1))
-            rnn_out, self.hidden = self.rnn(embeds.view(seq_len,batch_size,150), self.hidden)
+            rnn_out, self.hidden = self.rnn(embeds.view(seq_len,batch_size,self.hidden_size), self.hidden)
             rnn_out = self.drop(rnn_out)
             output = self.out(rnn_out.view(batch_size,-1))
             return output
@@ -78,7 +78,7 @@ def generate_notes():
     duration_model.apply(deactivate_batchnorm)
 
     # Create seed
-    sequence_len = 20
+    sequence_len = 300
     dataset = np.load(join(source_dir,"dataset2.npy"), allow_pickle=True)
     idx = random.randint(0,len(dataset)-sequence_len-1)
     note_sequence, duration_sequence = [], []
@@ -94,7 +94,7 @@ def generate_notes():
         while True:
             global reload_seed
             if reload_seed:
-                sequence_len = 20
+                sequence_len = 300
                 idx = random.randint(0,len(dataset)-sequence_len-1)
                 note_sequence, duration_sequence = [], []
                 for i in range(idx, idx+sequence_len):
