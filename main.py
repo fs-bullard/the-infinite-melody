@@ -92,16 +92,16 @@ def generate_notes():
         k = 4
         count = 1
         while True:
-            global reload_seed
-            if reload_seed:
-                sequence_len = 300
-                idx = random.randint(0,len(dataset)-sequence_len-1)
-                note_sequence, duration_sequence = [], []
-                for i in range(idx, idx+sequence_len):
-                    note_sequence.append(dataset[i][0])
-                    duration_sequence.append(dataset[i][1])
-                note_sequence, duration_sequence = torch.tensor(note_sequence, dtype=torch.int32), torch.tensor(duration_sequence, dtype=torch.int32)
-                reload_seed = False
+            # global reload_seed
+            # if reload_seed:
+            #     sequence_len = 300
+            #     idx = random.randint(0,len(dataset)-sequence_len-1)
+            #     note_sequence, duration_sequence = [], []
+            #     for i in range(idx, idx+sequence_len):
+            #         note_sequence.append(dataset[i][0])
+            #         duration_sequence.append(dataset[i][1])
+            #     note_sequence, duration_sequence = torch.tensor(note_sequence, dtype=torch.int32), torch.tensor(duration_sequence, dtype=torch.int32)
+            #     reload_seed = False
 
             # next note
             next_note = note_model(note_sequence.to(device).view(1,sequence_len))
@@ -157,7 +157,7 @@ def generate_notes():
 # web socket
 thread = None
 thread_lock = Lock()
-reload_seed = False
+# reload_seed = False
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "key"
@@ -180,10 +180,10 @@ def connect():
 def disconnect():
     print('Client disconnected',  request.sid)
 
-@socketio.on('reload')
-def handle_data():
-    global reload_seed
-    reload_seed = True
+# @socketio.on('reload')
+# def handle_data():
+#     global reload_seed
+#     reload_seed = True
 
 @app.route("/soundcloud", methods=["GET"])
 def to_soundcloud():
