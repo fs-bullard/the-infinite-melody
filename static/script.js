@@ -213,7 +213,7 @@ function playNextNote(noteIndex, note, dur) {
 }
 
 function generateSingleNote(noteIndex) {
-    if (notes.length == 0) {
+    if (notes.length == 0 || noteIndex == notes.length) {
         notes = songs[Math.floor(Math.random() * (songs.length - 1))];
         noteIndex = 0;
     }
