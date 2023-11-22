@@ -199,4 +199,4 @@ def to_devpost():
 
 if __name__ == '__main__':
     # app.run(debug=True)
-    socketio.run(app, cors_allowed_origins="*")
+    socketio.run(app)
