@@ -1,13 +1,13 @@
-import os
+# import os
 from flask import Flask, render_template, redirect
 
-import torch
-import numpy as np
-import torch.nn as nn
-import random
-from torch.autograd import Variable
-from os.path import join
-import __main__
+# import torch
+# import numpy as np
+# import torch.nn as nn
+# import random
+# from torch.autograd import Variable
+# from os.path import join
+# import __main__
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "key"
